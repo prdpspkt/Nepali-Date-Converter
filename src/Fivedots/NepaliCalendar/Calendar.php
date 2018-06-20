@@ -139,7 +139,7 @@ class Calendar
      * @return array Converted Nepali Date for the supplied English Date
      * @throws CalendarException CalendarExceptions
      */
-    public function englishToNepali($year, $month, $date)
+    public function englishToNepali($year, $month, $date, $lang)
     {
         // Check for date range
         $chk = English::isValidRange($year, $month, $date);
@@ -227,16 +227,25 @@ class Calendar
             $numDay = $day;
 
             $nepDate = new DateVO();
+            if($lang == 'ne'){
+            $nepDate->year = Unicode::getNepaliNumber($y);
+            $nepDate->month = Unicode::getNepaliNumber($m);
+            $nepDate->date = Unicode::getNepaliNumber($total_nDays);
+            $nepDate->day = UnicodeDays::getTitle($day);
+            $nepDate->nmonth = UnicodeNepali::getTitle($m);
+            $nepDate->numDay = Unicode::getNepaliNumber($numDay); 
+            }
+            else{
             $nepDate->year = $y;
             $nepDate->month = $m;
             $nepDate->date = $total_nDays;
             $nepDate->day = Days::getTitle($day);
             $nepDate->nmonth = Nepali::getTitle($m);
             $nepDate->numDay = $numDay;
+            }
+            
 
             return (array)$nepDate;
         }
     }
-
-
 }
